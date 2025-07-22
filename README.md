@@ -3,7 +3,7 @@
 > What is gws?
 - go + aws cli v2 = gws
 
-you can this bin file
+You can easily use AWS CLI v2 as an MFA-enabled IAM user on a Mac.
 
 ```
 go build -o gws main.go
