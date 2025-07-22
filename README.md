@@ -1,4 +1,9 @@
-# aws-mfa-login-script
+# gws
+
+> What is gws?
+- go + aws cli v2 = gws
+
+you can this bin file
 
 ```
 go build -o gws main.go
