@@ -11,8 +11,6 @@ sudo cp ./gws /usr/local/bin/
 ```
 
 ## Command
-
-### case 1
 Use Default User
 ```
 gws <mfa_token>
