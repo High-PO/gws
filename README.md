@@ -26,7 +26,7 @@ Help Command
 gws help
 ```
 ```
-gws <USER> help
+gws <profile> help
 ```
 
 Show Version
