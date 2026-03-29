@@ -64,15 +64,15 @@ func (m *mockShellLauncher) Launch(creds *SessionCredential, profile string) err
 
 func TestAuthenticate_Success(t *testing.T) {
 	creds := &SessionCredential{
-		AccessKeyID:     "AKIAIOSFODNN7EXAMPLE",
-		SecretAccessKey: "wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY",
-		SessionToken:    "FwoGZXIvYXdzEBYaDH...",
+		AccessKeyID:     "ABCDEFGHIJKLMNOPQRST",
+		SecretAccessKey: "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcd",
+		SessionToken:    "test-session-token-value",
 		Expiration:      "2024-01-01T12:00:00Z",
 	}
 
 	sts := &mockSTSClient{creds: creds}
 	cfg := newMockConfigProvider()
-	cfg.serials["default"] = "arn:aws:iam::123456789012:mfa/user"
+	cfg.serials["default"] = "arn:aws:iam::000000000000:mfa/testdevice"
 	shell := &mockShellLauncher{}
 
 	auth := &Authenticator{STS: sts, Config: cfg, Shell: shell}
@@ -91,7 +91,7 @@ func TestAuthenticate_Success(t *testing.T) {
 func TestAuthenticate_STSFailure(t *testing.T) {
 	sts := &mockSTSClient{err: fmt.Errorf("ExpiredTokenException: token expired")}
 	cfg := newMockConfigProvider()
-	cfg.serials["default"] = "arn:aws:iam::123456789012:mfa/user"
+	cfg.serials["default"] = "arn:aws:iam::000000000000:mfa/testdevice"
 	shell := &mockShellLauncher{}
 
 	auth := &Authenticator{STS: sts, Config: cfg, Shell: shell}
@@ -109,15 +109,15 @@ func TestAuthenticate_STSFailure(t *testing.T) {
 
 func TestAuthenticate_ShellLaunchFailure(t *testing.T) {
 	creds := &SessionCredential{
-		AccessKeyID:     "AKID",
-		SecretAccessKey: "SECRET",
-		SessionToken:    "TOKEN",
+		AccessKeyID:     "TESTKEY",
+		SecretAccessKey: "TESTSECRET",
+		SessionToken:    "TESTTOKEN",
 		Expiration:      "2024-01-01T12:00:00Z",
 	}
 
 	sts := &mockSTSClient{creds: creds}
 	cfg := newMockConfigProvider()
-	cfg.serials["default"] = "arn:aws:iam::123456789012:mfa/user"
+	cfg.serials["default"] = "arn:aws:iam::000000000000:mfa/testdevice"
 	shell := &mockShellLauncher{err: fmt.Errorf("shell not found")}
 
 	auth := &Authenticator{STS: sts, Config: cfg, Shell: shell}
@@ -146,7 +146,7 @@ func TestProperty6_ErrorMessageContainsCause(t *testing.T) {
 		func(cause string) bool {
 			sts := &mockSTSClient{err: fmt.Errorf("some cause: %s", cause)}
 			cfg := newMockConfigProvider()
-			cfg.serials["default"] = "arn:aws:iam::123456789012:mfa/user"
+			cfg.serials["default"] = "arn:aws:iam::000000000000:mfa/testdevice"
 			shell := &mockShellLauncher{}
 
 			auth := &Authenticator{STS: sts, Config: cfg, Shell: shell}

@@ -26,7 +26,7 @@ func TestSaveThenGetMFASerial(t *testing.T) {
 	store := credential.NewMockStore()
 	mgr := &Manager{Store: store}
 
-	if err := mgr.SaveMFASerial("default", "arn:aws:iam::123456789012:mfa/user"); err != nil {
+	if err := mgr.SaveMFASerial("default", "arn:aws:iam::000000000000:mfa/testdevice"); err != nil {
 		t.Fatalf("SaveMFASerial failed: %v", err)
 	}
 
@@ -34,8 +34,8 @@ func TestSaveThenGetMFASerial(t *testing.T) {
 	if err != nil {
 		t.Fatalf("GetMFASerial failed: %v", err)
 	}
-	if got != "arn:aws:iam::123456789012:mfa/user" {
-		t.Errorf("GetMFASerial = %q, want %q", got, "arn:aws:iam::123456789012:mfa/user")
+	if got != "arn:aws:iam::000000000000:mfa/testdevice" {
+		t.Errorf("GetMFASerial = %q, want %q", got, "arn:aws:iam::000000000000:mfa/testdevice")
 	}
 }
 
