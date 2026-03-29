@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 	"os/exec"
+	"path/filepath"
 	"runtime"
 	"strings"
 
@@ -47,13 +48,14 @@ func buildEnv(baseEnv []string, creds *auth.SessionCredential, profile string) [
 // getShellPath returns the appropriate shell path for the current OS.
 // - macOS/Linux: uses $SHELL environment variable (falls back to /bin/sh)
 // - Windows: uses cmd.exe
+// The returned path is validated to be an absolute path (Unix) or a known shell (Windows).
 func getShellPath() string {
 	switch runtime.GOOS {
 	case "windows":
 		return "cmd.exe"
 	default: // darwin, linux, etc.
 		shellPath := os.Getenv("SHELL")
-		if shellPath == "" {
+		if shellPath == "" || !filepath.IsAbs(shellPath) {
 			return "/bin/sh"
 		}
 		return shellPath
