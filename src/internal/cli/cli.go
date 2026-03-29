@@ -24,6 +24,9 @@ type Command struct {
 
 var sixDigitRe = regexp.MustCompile(`^[0-9]{6}$`)
 
+// profileRe allows alphanumeric, hyphens, underscores, and dots (safe for AWS CLI --profile).
+var profileRe = regexp.MustCompile(`^[a-zA-Z0-9._-]+$`)
+
 // isSixDigitNumber checks if a string is exactly 6 digits.
 func isSixDigitNumber(s string) bool {
 	return sixDigitRe.MatchString(s)
@@ -48,6 +51,9 @@ func Parse(args []string) (Command, error) {
 			return Command{Type: CmdAuth, Profile: "default", Token: args[0]}, nil
 		}
 	case 2:
+		if !profileRe.MatchString(args[0]) {
+			return Command{}, fmt.Errorf("invalid profile name: %q (alphanumeric, hyphens, underscores, dots only)", args[0])
+		}
 		if err := ValidateMFAToken(args[1]); err != nil {
 			return Command{}, err
 		}
